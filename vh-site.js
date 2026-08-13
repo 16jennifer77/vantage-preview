@@ -155,6 +155,25 @@ footer .justify-between{justify-content:center!important;text-align:center}\
     });
   }
 
+  /* ============ logo click lands at the very top (announcement bar fully visible) ============ */
+  var onHome = /(^|\/)index\.html$/.test(location.pathname) || /\/$/.test(location.pathname);
+  if (onHome && !location.hash) {
+    var navEntry = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+    if (!navEntry || navEntry.type === 'navigate') {
+      window.scrollTo(0, 0);
+      window.addEventListener('load', function () { setTimeout(function () { window.scrollTo(0, 0) }, 0) });
+    }
+  }
+  $$('header a.gap-3').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (onHome) {
+        e.preventDefault();
+        try { history.replaceState(null, '', location.pathname + location.search) } catch (eH) {}
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
   /* ============ hamburger menu ============ */
   var menuBtn = $('button[aria-label="Menu"]');
   if (menuBtn) {
