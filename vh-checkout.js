@@ -37,7 +37,7 @@
     opts = opts || {};
     var ok = false;
     try { ok = !!localStorage.getItem('vh-preview-session') } catch (e) {}
-    if (!ok) { location.href = 'cart.html?v=1786473267'; return false }
+    if (!ok) { location.href = 'sign-in.html'; return false }
     if (!opts.allowEmpty && !cart().length) { location.href = 'index.html#catalog'; return false }
     return true;
   }

@@ -8,7 +8,7 @@
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)) }
   var session = false;
   try { session = !!localStorage.getItem('vh-preview-session') } catch (e) {}
-  if (!session) { location.href = 'cart.html'; return }
+  if (!session) { location.href = 'sign-in.html'; return }
 
   function store(k, fb) { try { return JSON.parse(localStorage.getItem(k)) || fb } catch (e) { return fb } }
   function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch (e) {} }
@@ -61,7 +61,7 @@
       b.addEventListener('click', function (e) {
         e.preventDefault();
         try { localStorage.removeItem('vh-preview-session') } catch (e2) {}
-        location.href = 'cart.html';
+        location.href = 'sign-in.html';
       });
     }
   });
@@ -71,6 +71,22 @@
   });
 
   var page = (location.pathname.split('/').pop() || '').replace(/\.html.*/, '');
+
+  /* mobile: account sub-pages stand alone — sidebar hidden, back-link to Profile */
+  if (page === 'orders' || page === 'favorites' || page === 'bulk-quotes') {
+    var acSide = $('aside');
+    var acContent = acSide && acSide.nextElementSibling;
+    if (acSide && acContent) {
+      var back = document.createElement('a');
+      back.href = 'profile.html';
+      back.className = 'vh-back-profile';
+      back.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events:none"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Profile';
+      acContent.insertBefore(back, acContent.firstChild);
+      var backCss = document.createElement('style');
+      backCss.textContent = '.vh-back-profile{display:none}@media (max-width:767px){aside{display:none!important}.vh-back-profile{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#0b0c16;text-decoration:none;margin:0 0 14px;padding:8px 14px 8px 10px;border:1px solid rgba(11,12,22,.12);border-radius:10px;background:#fff}}';
+      document.head.appendChild(backCss);
+    }
+  }
 
   /* ---------- profile ---------- */
   if (page === 'profile') {
@@ -214,6 +230,12 @@
     var dates = $$('input[type="date"]');
     var clearBtn = $$('button').filter(function (b) { return b.textContent.trim() === 'Clear' })[0];
     var pills = $$('button').filter(function (b) { return /^(All|Active|Delivered|Cancelled)/.test(b.textContent.trim()) });
+    if (pills.length && pills[0].parentElement) {
+      pills[0].parentElement.classList.add('vh-pillrow');
+      var pillCss = document.createElement('style');
+      pillCss.textContent = '@media (max-width:767px){.vh-pillrow{flex-wrap:nowrap!important;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}.vh-pillrow::-webkit-scrollbar{display:none}.vh-pillrow button{flex:none;white-space:nowrap}}';
+      document.head.appendChild(pillCss);
+    }
     function fmt(ts) { return new Date(ts).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) }
     var oEmpty = $$('div').filter(function (d) { return d.children.length === 0 && d.textContent.indexOf("You haven't placed any orders yet") > -1 })[0];
     var host = oEmpty ? oEmpty.parentNode : null;

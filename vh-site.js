@@ -44,7 +44,15 @@
 #vh-menu.on{display:block}\
 #vh-menu a{display:block;padding:13px 26px;font-size:15px;font-weight:500;color:#241a3f;text-decoration:none;border-top:1px solid rgba(36,26,63,.07)}\
 #vh-menu a:hover{background:rgba(124,58,237,.06);color:#6d28d9}\
-.vh-form-note{margin-top:10px;font-size:13px;text-align:center;border-radius:10px;padding:10px 14px}';
+.vh-form-note{margin-top:10px;font-size:13px;text-align:center;border-radius:10px;padding:10px 14px}\
+@media (max-width:767px){\
+header button[aria-label="Menu"]{order:-2;margin-left:0}\
+header a.gap-3{order:-1}\
+header div.md\\:ml-0{margin-left:auto}\
+header div.gap-8{gap:14px}\
+div[class*="minmax(240px"]{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}\
+footer .justify-between{justify-content:center!important;text-align:center}\
+}';
   document.head.appendChild(style);
 
   /* ============ toast ============ */
@@ -92,12 +100,16 @@
       row.className = 'vh-dr-line';
       row.innerHTML = '<span style="flex:1"><b style="color:#241a3f">' + x.title + '</b> <span style="color:#8d82ab">' + x.size + '</span><br><span style="color:#4a4066">' + money(x.price) + '/vial</span></span>' +
         '<span class="vh-dr-qty"><button type="button" data-a="-">−</button><b>' + x.qty + '</b><button type="button" data-a="+">+</button></span>' +
-        '<b style="color:#241a3f;min-width:52px;text-align:right">' + money(x.price * x.qty) + '</b>';
+        '<b style="color:#241a3f;min-width:52px;text-align:right">' + money(x.price * x.qty) + '</b>' +
+        '<button type="button" data-a="x" aria-label="Remove ' + x.title + ' from cart" title="Remove from cart" style="border:none;background:none;color:#8d82ab;width:26px;height:26px;flex:none;display:grid;place-items:center;cursor:pointer;padding:0;margin-left:2px"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events:none"><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>';
       $$('button', row).forEach(function (b) {
         b.addEventListener('click', function () {
           var l = items();
-          l[i].qty += b.getAttribute('data-a') === '+' ? 1 : -1;
-          if (l[i].qty <= 0) l.splice(i, 1);
+          if (b.getAttribute('data-a') === 'x') l.splice(i, 1);
+          else {
+            l[i].qty += b.getAttribute('data-a') === '+' ? 1 : -1;
+            if (l[i].qty <= 0) l.splice(i, 1);
+          }
           save(l);
         });
       });
@@ -306,7 +318,7 @@
       quicks.forEach(function (b) { b.addEventListener('click', function () { qty = parseInt(b.textContent, 10); update() }) });
       function doAdd() { add({ handle: handle, title: title, size: activeSize, price: perVial(qty) }, qty) }
       if (addBtn) addBtn.addEventListener('click', doAdd);
-      if (buyBtn) buyBtn.addEventListener('click', function () { doAdd(); if (session()) openDrawer(); else location.href = PFX + 'cart.html' });
+      if (buyBtn) buyBtn.addEventListener('click', function () { doAdd(); if (session()) openDrawer(); else location.href = PFX + 'sign-in.html' });
       // save-to-favorites heart beside Add to cart
       if (addBtn && handle) {
         var HEART = '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="FILL" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="pointer-events:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>';
@@ -432,22 +444,46 @@
         note.style.cssText += 'border:1px solid rgba(5,150,105,0.3);background:rgba(5,150,105,0.06);color:#059669;font-weight:600';
         note.textContent = 'Message received — we reply within one business day.';
         f.reset();
+      } else if (send.textContent.trim() === 'Create account') {
+        // preview: the account lives in this browser's storage only
+        var suProf = {};
+        try { suProf = JSON.parse(localStorage.getItem('vh-profile-v1')) || {} } catch (eP) {}
+        var gv = function (id) { var i2 = $('#' + id, f); return i2 ? i2.value.trim() : '' };
+        suProf.firstName = gv('firstName') || suProf.firstName || '';
+        suProf.lastName = gv('lastName');
+        suProf.email = gv('email');
+        var mkt = $('#vh-su-marketing', f);
+        suProf.marketing = mkt ? mkt.checked : false;
+        if (!suProf.memberSince) suProf.memberSince = Date.now();
+        try {
+          localStorage.setItem('vh-profile-v1', JSON.stringify(suProf));
+          localStorage.setItem('vh-preview-pw', ($('#password', f) || $('input[data-vh-pw]', f)).value);
+          localStorage.setItem(SESSION_KEY, '1');
+        } catch (e3) {}
+        note.style.cssText += 'border:1px solid rgba(5,150,105,0.3);background:rgba(5,150,105,0.06);color:#059669;font-weight:600';
+        note.textContent = 'Account created — signing you in…';
+        f.appendChild(note);
+        setTimeout(function () { location.href = PFX + 'index.html' }, 900);
+        return;
       } else {
         if (send.textContent.trim() === 'Sign in') {
           var em = $('input[type="email"]', f), pw = $('input[data-vh-pw]', f) || $('input[type="password"]', f);
           var expectedPw = 'preview';
           try { expectedPw = localStorage.getItem('vh-preview-pw') || 'preview' } catch (ePw) {}
-          if (em && pw && em.value.trim().toLowerCase() === 'jennifer@vantagebiology.com' && pw.value === expectedPw) {
+          var knownEmail = 'jennifer@vantagebiology.com';
+          try { var prof0 = JSON.parse(localStorage.getItem('vh-profile-v1')) || {}; if (prof0.email) knownEmail = String(prof0.email).toLowerCase() } catch (eK) {}
+          var typed = em ? em.value.trim().toLowerCase() : '';
+          if (em && pw && (typed === knownEmail || typed === 'jennifer@vantagebiology.com') && pw.value === expectedPw) {
             try { localStorage.setItem(SESSION_KEY, '1') } catch (e2) {}
             note.style.cssText += 'border:1px solid rgba(5,150,105,0.3);background:rgba(5,150,105,0.06);color:#059669;font-weight:600';
-            note.textContent = 'Preview session started — cart and checkout are unlocked.';
+            note.textContent = 'Signed in — loading the catalog…';
             f.appendChild(note);
             setTimeout(function () { location.href = PFX + 'index.html' }, 900);
             return;
           }
         }
         note.style.cssText += 'border:1px solid rgba(180,83,9,0.3);background:rgba(180,83,9,0.06);color:#b45309;font-weight:600';
-        note.textContent = 'Preview build — accounts are not connected yet. Email info@vantagebiology.com for wholesale access.';
+        note.textContent = 'That email and password don’t match an account on this device. Create an account, or use the reset link above.';
       }
       f.appendChild(note);
     });
