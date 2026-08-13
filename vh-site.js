@@ -167,7 +167,14 @@ footer .justify-between{justify-content:center!important;text-align:center}\
     } else {
       links = links.map(function (a) { return a.cloneNode(true) });
     }
-    links.forEach(function (a) { a.removeAttribute('class'); panel.appendChild(a) });
+    links.forEach(function (a) {
+      a.removeAttribute('class');
+      a.addEventListener('click', function () {
+        panel.classList.remove('on');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+      panel.appendChild(a);
+    });
     header.appendChild(panel);
     if (getComputedStyle(header).position === 'static') header.style.position = 'relative';
     menuBtn.addEventListener('click', function () {
