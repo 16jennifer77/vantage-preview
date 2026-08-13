@@ -203,6 +203,11 @@ footer .justify-between{justify-content:center!important;text-align:center}\
     document.addEventListener('click', function (e) {
       if (panel.classList.contains('on') && !header.contains(e.target)) panel.classList.remove('on');
     });
+    // bfcache restore (iOS back-swipe) can re-show the page with the menu open
+    window.addEventListener('pageshow', function () {
+      panel.classList.remove('on');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
   }
 
   /* ============ theme toggle (app-chrome pages) ============ */
