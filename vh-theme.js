@@ -37,15 +37,20 @@ html.dark{\
 --v-bg:#030210;--v-subtle:#0f101f;\
 --color-tint-1:#0b0a20;\
 --color-violet-brand-3:#c4b5fd;\
+--v-card:#070719;\
 }\
-.dark img[src$=".png"]{filter:brightness(.66) contrast(1.05) sepia(.3) hue-rotate(210deg) saturate(1.05)}\
-.dark img[src$=".png"]:not([src*="-padded"]){filter:brightness(.4) contrast(.88) sepia(.32) hue-rotate(208deg) saturate(1.3) brightness(1.08)}\
+.dark .bg-foreground.text-background{background-color:#6d28d9;color:#fff}\
+.dark .pill-brand{color:#c4b5fd}\
+.dark img[src$=".png"]{filter:brightness(.78) contrast(1.03) sepia(.16) hue-rotate(210deg) saturate(1.05)}\
+.dark img[src$=".png"]:not([src*="-padded"]){filter:brightness(.52) contrast(.93) sepia(.18) hue-rotate(208deg) saturate(1.12) brightness(1.06)}\
 .dark .bg-ink{background-color:#241a3f}\
 .dark .bg-\\[rgba\\(124\\,58\\,237\\,0\\.12\\)\\]{background-color:rgba(76,29,149,.55)}\
 .dark .border-\\[rgba\\(124\\,58\\,237\\,0\\.25\\)\\]{border-color:rgba(196,181,253,.4)}\
 .dark span.bg-\\[rgba\\(28\\,19\\,48\\,0\\.06\\)\\]{background-color:rgba(7,7,25,.65);color:#cfc9e0}\
 .dark .bg-\\[\\#059669\\]{background-color:#34d399}\
 .dark [style*="background:rgba(255,255,255,0.88)"]{background:rgba(11,9,30,.78)!important;color:#c4b5fd!important;border-color:rgba(168,132,255,.45)!important}\
+.dark [style*="background:#faf9fd"]{background:#0d0b22!important;border-color:rgba(168,132,255,.25)!important}\
+.dark [style*="color:#5d5478"]{color:#a9a3bd!important}\
 .dark [class*="#f7f4fe"],.dark [class*="#f6f2fe"]{background-image:radial-gradient(500px 260px at 90% 0,rgba(124,58,237,.18),transparent 60%),linear-gradient(160deg,#100d28,#0a081c)}\
 .dark .bg-white{background-color:var(--card)}\
 .dark .bg-white\\/85{background-color:rgba(7,7,25,.85)}\

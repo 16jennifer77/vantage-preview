@@ -359,7 +359,7 @@ footer .justify-between{justify-content:center!important;text-align:center}\
           favBtn.setAttribute('aria-label', on ? 'Remove from favorites' : 'Save to favorites');
           favBtn.title = on ? 'Saved — click to remove' : 'Save to favorites';
         }
-        favBtn.style.cssText = 'width:46px;height:46px;flex:none;display:grid;place-items:center;border:1px solid rgba(11,12,22,.14);border-radius:12px;background:#fff;cursor:pointer;margin-left:10px';
+        favBtn.style.cssText = 'width:46px;height:46px;flex:none;display:grid;place-items:center;border:1px solid var(--v-in,rgba(11,12,22,.14));border-radius:12px;background:var(--v-card,#fff);cursor:pointer;margin-left:10px';
         favBtn.addEventListener('click', function () {
           var list = favs();
           var i = list.findIndex(function (f) { return f.handle === handle });

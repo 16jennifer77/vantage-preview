@@ -297,7 +297,7 @@
       list.forEach(function (o) {
         var d = document.createElement('div');
         d.className = 'vh-orow';
-        d.style.cssText = 'background:#fff;border:1px solid rgba(11,12,22,.09);border-radius:14px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap';
+        d.style.cssText = 'background:var(--v-card,#fff);border:1px solid var(--v-bd,rgba(11,12,22,.09));border-radius:14px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap';
         d.innerHTML =
           '<div style="min-width:0"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">' +
           '<span style="font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#61626f">Order</span>' +
@@ -353,7 +353,7 @@
       list.forEach(function (f, i) {
         var d = document.createElement('div');
         d.className = 'vh-frow';
-        d.style.cssText = 'background:#fff;border:1px solid rgba(11,12,22,.09);border-radius:14px;padding:18px 22px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap';
+        d.style.cssText = 'background:var(--v-card,#fff);border:1px solid var(--v-bd,rgba(11,12,22,.09));border-radius:14px;padding:18px 22px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap';
         d.innerHTML =
           '<div style="display:flex;align-items:center;gap:16px;min-width:0">' +
           '<img src="products/' + f.handle + '.png" alt="' + f.title + ' vial" style="width:64px;height:64px;object-fit:cover;border-radius:11px;flex:none" onerror="this.style.display=\'none\'"/>' +
@@ -396,7 +396,7 @@
       quotes.forEach(function (qt) {
         var d = document.createElement('div');
         d.className = 'vh-qrow';
-        d.style.cssText = 'background:#fff;border:1px solid rgba(11,12,22,.09);border-radius:14px;padding:16px 20px;margin-bottom:12px;font-size:13.5px;color:#41424f;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap';
+        d.style.cssText = 'background:var(--v-card,#fff);border:1px solid var(--v-bd,rgba(11,12,22,.09));border-radius:14px;padding:16px 20px;margin-bottom:12px;font-size:13.5px;color:#41424f;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap';
         d.innerHTML = '<span><b style="color:#0b0c16">' + qt.product + '</b> · ' + qt.qty + ' vials<br><span style="color:#61626f">' + qt.notes + '</span></span>' +
           '<span style="display:inline-flex;align-self:flex-start;border-radius:999px;padding:3px 10px;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(180,83,9,.08);color:#b45309">Under review</span>';
         wrap.insertBefore(d, wrap.firstChild);
@@ -409,7 +409,7 @@
         if ($('#vh-q-form')) { $('#vh-q-form').remove(); return }
         var fm = document.createElement('div');
         fm.id = 'vh-q-form';
-        fm.style.cssText = 'border:1px solid rgba(11,12,22,.12);border-radius:12px;padding:16px;margin:14px 0;font-size:13.5px;background:#fff';
+        fm.style.cssText = 'border:1px solid var(--v-bd,rgba(11,12,22,.12));border-radius:12px;padding:16px;margin:14px 0;font-size:13.5px;background:var(--v-card,#fff)';
         fm.innerHTML = '<input id="vq-p" placeholder="Product (e.g. BPC-157 10mg)" style="width:100%;height:36px;border:1px solid rgba(11,12,22,.14);border-radius:9px;padding:0 11px;font-size:13.5px;font-family:inherit;margin-bottom:10px;outline:none"/>' +
           '<input id="vq-n" placeholder="Quantity (vials)" inputmode="numeric" style="width:100%;height:36px;border:1px solid rgba(11,12,22,.14);border-radius:9px;padding:0 11px;font-size:13.5px;font-family:inherit;margin-bottom:10px;outline:none"/>' +
           '<textarea id="vq-t" placeholder="Timeline, standing-order cadence, or anything else" style="width:100%;min-height:70px;border:1px solid rgba(11,12,22,.14);border-radius:9px;padding:9px 11px;font-size:13.5px;font-family:inherit;margin-bottom:10px;outline:none;resize:vertical"></textarea>' +

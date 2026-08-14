@@ -80,7 +80,7 @@
     box.innerHTML = '';
     list.forEach(function (x, i) {
       var card = document.createElement('div');
-      card.style.cssText = 'display:flex;gap:14px;align-items:center;background:#fff;border:1px solid rgba(11,12,22,0.09);border-radius:14px;padding:14px 16px;margin-bottom:10px';
+      card.style.cssText = 'display:flex;gap:14px;align-items:center;background:var(--v-card,#fff);border:1px solid var(--v-bd,rgba(11,12,22,0.09));border-radius:14px;padding:14px 16px;margin-bottom:10px';
       card.innerHTML =
         '<img src="products/' + x.handle + '.png" alt="' + x.title + ' vial" style="width:62px;height:62px;object-fit:cover;border-radius:9px;flex:none"/>' +
         '<div style="flex:1;min-width:0">' +
