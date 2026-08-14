@@ -65,10 +65,7 @@
       });
     }
   });
-  // neutralize dead theme toggle
-  $$('button[aria-label*="theme" i],button[aria-label*="Toggle" i]').forEach(function (b) {
-    b.addEventListener('click', function (e) { e.preventDefault(); toast('Theme toggle arrives with the real app.') });
-  });
+  // header theme toggles are wired for real in vh-site.js (window.vhTheme)
 
   var page = (location.pathname.split('/').pop() || '').replace(/\.html.*/, '');
 
@@ -103,6 +100,25 @@
     if (f.mkt) f.mkt.checked = !!P.marketing;
     var since = $$('p').filter(function (p) { return p.textContent.indexOf('Member since') === 0 })[0];
     if (since) since.textContent = 'Member since ' + new Date(P.memberSince).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    // ----- Appearance card (dark-mode switch), cloned from the Communication card so classes match -----
+    var commTitle = $$('[data-slot="card-title"]').filter(function (t) { return t.textContent.trim() === 'Communication' })[0];
+    var commCard = commTitle && commTitle.closest('[data-slot="card"]');
+    if (commCard && window.vhTheme) {
+      var appCard = commCard.cloneNode(true);
+      appCard.querySelector('[data-slot="card-title"]').textContent = 'Appearance';
+      var content = appCard.querySelector('[data-slot="card-content"]');
+      content.innerHTML = '<div class="flex items-start justify-between gap-4">' +
+        '<span><span class="block text-sm font-medium">Dark mode</span>' +
+        '<span class="block text-xs text-muted-foreground">Use the dark theme on this device.</span></span>' +
+        '<button type="button" class="vh-switch" role="switch" aria-label="Dark mode"></button></div>';
+      var sw = content.querySelector('.vh-switch');
+      function paintSwitch() { sw.setAttribute('aria-checked', vhTheme.mode() === 'dark' ? 'true' : 'false') }
+      paintSwitch();
+      sw.addEventListener('click', function (e) { e.preventDefault(); vhTheme.toggle() });
+      document.addEventListener('vh-theme', paintSwitch);
+      commCard.parentNode.insertBefore(appCard, commCard.nextSibling);
+    }
 
     $$('form').forEach(function (fm) { fm.addEventListener('submit', function (e) { e.preventDefault() }) });
     $$('button').forEach(function (b) {

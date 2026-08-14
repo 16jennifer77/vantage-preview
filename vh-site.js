@@ -210,16 +210,13 @@ footer .justify-between{justify-content:center!important;text-align:center}\
     });
   }
 
-  /* ============ theme toggle (app-chrome pages) ============ */
+  /* ============ theme toggle (app-chrome pages) — delegates to vh-theme.js ============ */
   $$('button').filter(function (b) {
     return /theme/i.test(b.getAttribute('aria-label') || '') || /toggle theme/i.test(b.textContent);
   }).forEach(function (b) {
-    b.addEventListener('click', function () {
-      var root = document.documentElement;
-      var dark = root.classList.toggle('dark');
-      root.classList.toggle('light', !dark);
-      root.style.colorScheme = dark ? 'dark' : 'light';
-      try { localStorage.setItem('theme', dark ? 'dark' : 'light') } catch (e) {}
+    b.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (window.vhTheme) vhTheme.toggle();
     });
   });
 
